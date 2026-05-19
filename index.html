@@ -12,135 +12,332 @@
         }
 
         body {
-            background: #0a0a0a;
-            color: #00ff41;
-            font-family: 'Courier New', Courier, monospace;
+            background: #1a1a2e;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 1rem;
+            font-family: 'Courier New', Courier, 'Menlo', 'Monaco', monospace;
         }
 
-        .terminal {
-            background: #0c0c0c;
-            border: 1px solid #1f1f1f;
-            border-radius: 8px;
-            padding: clamp(1rem, 4vw, 2rem);
+        .window {
             width: 100%;
-            max-width: 500px;
-            min-width: unset;
-            font-size: clamp(0.75rem, 2.5vw, 0.9rem);
-            line-height: 1.6;
-            overflow-x: auto;
+            max-width: 600px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
         }
 
-        .line {
-            white-space: nowrap;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        /* Шапка окна macOS */
+        .titlebar {
+            background: #2d2d2d;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #1a1a1a;
+            user-select: none;
         }
 
-        .host { color: #ff5e5e; }
+        .dots {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .dot {
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            transition: filter 0.2s;
+        }
+
+        .dot.red    { background: #ff5f57; }
+        .dot.yellow { background: #febc2e; }
+        .dot.green  { background: #28c840; }
+
+        .titlebar:hover .dot {
+            filter: brightness(1.1);
+        }
+
+        .title {
+            flex: 1;
+            text-align: center;
+            color: #999;
+            font-size: 0.8rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin-right: 40px;
+        }
+
+        /* Тело терминала */
+        .terminal {
+            background: #1e1e1e;
+            color: #33ff33;
+            padding: clamp(1rem, 4vw, 1.5rem);
+            font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+            line-height: 1.7;
+            min-height: 280px;
+        }
+
+        .host { color: #ff6b6b; }
         .path { color: #5ea3ff; }
+        .comment { color: #6a9955; }
+        .separator { color: #444; }
 
         .terminal p {
-            margin: 0.25rem 0;
+            margin: 0.1rem 0;
             word-break: break-word;
         }
 
-        .terminal p:first-child {
-            margin-bottom: 1rem;
+        .output {
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
         }
 
         .cursor::after {
-            content: '_';
+            content: '█';
             animation: blink 1s step-end infinite;
+            color: #33ff33;
         }
 
-        @keyframes blink { 50% { opacity: 0; } }
+        .cursor.steady::after {
+            content: '█';
+            animation: none;
+        }
+
+        .cursor.done::after {
+            content: '';
+            animation: none;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
 
         a {
-            color: #ffd700;
+            color: #5ea3ff;
             text-decoration: none;
             transition: color 0.2s;
         }
 
         a:hover {
             text-decoration: underline;
-            color: #ffed4a;
+            color: #80b8ff;
         }
 
         a:active {
-            color: #fbbf24;
+            color: #a0cfff;
         }
 
-        /* Скроллбар для длинных строк */
-        .terminal::-webkit-scrollbar,
-        .line::-webkit-scrollbar {
-            height: 4px;
+        .project-name {
+            color: #ffd700;
+            font-weight: bold;
         }
 
-        .terminal::-webkit-scrollbar-track,
-        .line::-webkit-scrollbar-track {
-            background: #0c0c0c;
+        .project-desc {
+            color: #aaa;
         }
 
-        .terminal::-webkit-scrollbar-thumb,
-        .line::-webkit-scrollbar-thumb {
-            background: #1f1f1f;
-            border-radius: 2px;
+        .project-link {
+            color: #5ea3ff;
         }
 
-        /* Увеличенная зона касания для ссылки на мобильных */
+        .terminal::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .terminal::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        .terminal::-webkit-scrollbar-thumb {
+            background: #3a3a3a;
+            border-radius: 3px;
+        }
+
         @media (max-width: 480px) {
+            .title {
+                font-size: 0.7rem;
+                margin-right: 30px;
+            }
+            .dot {
+                width: 10px;
+                height: 10px;
+            }
+            .dots {
+                gap: 6px;
+            }
+            .titlebar {
+                padding: 10px 12px;
+            }
+
             a {
                 display: inline-block;
-                padding: 0.5rem 0;
-                min-height: 44px;
-                line-height: 2;
-            }
-
-            .terminal p:last-child {
-                margin-top: 0.5rem;
-            }
-        }
-
-        /* Предотвращение масштабирования при фокусе на iOS */
-        @media screen and (-webkit-min-device-pixel-ratio: 0) {
-            input, textarea, select {
-                font-size: 16px;
+                padding: 0.3rem 0;
+                min-height: 38px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="terminal">
-        <p class="line">
-            <span class="host">admin@anykey</span>:<span class="path">~/project</span>$ cat status.txt
-        </p>
+    <div class="window">
+        <!-- Шапка macOS Terminal -->
+        <div class="titlebar">
+            <div class="dots">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            <div class="title">admin — -zsh — 80×24</div>
+        </div>
 
-        <p style="margin-top: 1rem;">
-            BUILD STATUS: <span style="color: #ffd700;">IN PROGRESS...</span>
-        </p>
+        <!-- Контент терминала -->
+        <div class="terminal">
+            <!-- Строка 1: cat status.txt -->
+            <p>
+                <span class="host">admin@anykey</span>:<span class="path">~/project</span>$&nbsp;
+                <span id="cmd1"></span><span class="cursor steady" id="cursor1"></span>
+            </p>
 
-        <p>
-            ESTIMATED LAUNCH: <span style="color: #5ea3ff;">NULL</span>
-        </p>
+            <!-- Вывод status.txt -->
+            <div id="output1" style="display: none;">
+                <p class="output" style="margin-top: 0.8rem; animation-delay: 0.1s;">
+                    BUILD STATUS: <span style="color: #ffd700;">IN PROGRESS...</span>
+                </p>
+                <p class="output" style="animation-delay: 0.3s;">
+                    ESTIMATED LAUNCH: <span style="color: #5ea3ff;">NULL</span>
+                </p>
+                <p class="output" style="animation-delay: 0.5s;">
+                    DEPLOY TARGET: <span style="color: #5ea3ff;">anykey/main</span>
+                </p>
+            </div>
 
-        <p>
-            DEPLOY TARGET: <span style="color: #5ea3ff;">anykey/main</span>
-        </p>
+            <!-- Строка 2: cat projects.txt -->
+            <p id="cmd2-line" style="display: none; margin-top: 1.2rem;">
+                <span class="host">admin@anykey</span>:<span class="path">~/project</span>$&nbsp;
+                <span id="cmd2"></span><span class="cursor steady" id="cursor2"></span>
+            </p>
 
-        <br>
+            <!-- Вывод projects.txt -->
+            <div id="output2" style="display: none;">
+                <p class="output" style="margin-top: 0.8rem; animation-delay: 0.1s;">
+                    <span class="comment"># ===== PROJECTS =====</span>
+                </p>
+                <p class="output" style="animation-delay: 0.2s;">
+                    <span class="separator">──────────────────────────────────────</span>
+                </p>
 
-        <p class="line">
-            <span class="host">admin@anykey</span>:<span class="path">~/project</span>$ ls
-        </p>
+                <!-- Проект 1: hls-tester -->
+                <p class="output" style="margin-top: 0.6rem; animation-delay: 0.4s;">
+                    <span class="project-name">hls-tester</span>
+                </p>
+                <p class="output" style="animation-delay: 0.5s; padding-left: 1.5rem;">
+                    <span class="project-desc">HLS stream validator & playlist inspector</span>
+                </p>
+                <p class="output" style="animation-delay: 0.6s; padding-left: 1.5rem;">
+                    <span class="project-link">↳ <a href="https://anykey.cc/hls-tester/">anykey.cc/hls-tester</a></span>
+                </p>
 
-        <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #666;">
-            * <a href="https://anykey.cc/hls-tester/">hls-tester</a>
-        </p>
+                <!-- Проект 2: dotfiles (закомментирован) -->
+                <!--
+                <p class="output" style="margin-top: 0.6rem; animation-delay: 0.8s;">
+                    <span class="project-name">dotfiles</span>
+                </p>
+                <p class="output" style="animation-delay: 0.9s; padding-left: 1.5rem;">
+                    <span class="project-desc">Personal dev environment configs & scripts</span>
+                </p>
+                <p class="output" style="animation-delay: 1.0s; padding-left: 1.5rem;">
+                    <span class="project-link">↳ <a href="https://github.com/anykey/dotfiles">github.com/anykey/dotfiles</a></span>
+                </p>
+                -->
+
+                <!-- Проект 3: feed-reader (закомментирован) -->
+                <!--
+                <p class="output" style="margin-top: 0.6rem; animation-delay: 1.2s;">
+                    <span class="project-name">feed-reader</span>
+                </p>
+                <p class="output" style="animation-delay: 1.3s; padding-left: 1.5rem;">
+                    <span class="project-desc">Minimal RSS/Atom aggregator with CLI interface</span>
+                </p>
+                <p class="output" style="animation-delay: 1.4s; padding-left: 1.5rem;">
+                    <span class="project-link">↳ <a href="https://github.com/anykey/feed-reader">github.com/anykey/feed-reader</a></span>
+                </p>
+                -->
+
+                <p class="output" style="animation-delay: 0.8s; margin-top: 0.5rem;">
+                    <span class="separator">──────────────────────────────────────</span>
+                </p>
+                <p class="output" style="animation-delay: 0.9s;">
+                    <span class="comment"># 1 project(s) listed</span>
+                </p>
+            </div>
+        </div>
     </div>
+
+    <script>
+        (function() {
+            const cmd1 = document.getElementById('cmd1');
+            const cursor1 = document.getElementById('cursor1');
+            const output1 = document.getElementById('output1');
+            const cmd2Line = document.getElementById('cmd2-line');
+            const cmd2 = document.getElementById('cmd2');
+            const cursor2 = document.getElementById('cursor2');
+            const output2 = document.getElementById('output2');
+
+            const text1 = 'cat status.txt';
+            const text2 = 'cat projects.txt';
+
+            let charIndex = 0;
+            const typingSpeed = 100;
+            const pauseAfterCmd1 = 700;
+            const pauseAfterOutput1 = 800;
+            const pauseAfterCmd2 = 600;
+
+            function typeCmd1() {
+                if (charIndex < text1.length) {
+                    cmd1.textContent += text1[charIndex];
+                    charIndex++;
+                    setTimeout(typeCmd1, typingSpeed + Math.random() * 60);
+                } else {
+                    cursor1.classList.remove('steady');
+                    cursor1.classList.add('done');
+
+                    setTimeout(() => {
+                        output1.style.display = 'block';
+                        setTimeout(() => {
+                            cmd2Line.style.display = 'block';
+                            typeCmd2();
+                        }, pauseAfterOutput1);
+                    }, pauseAfterCmd1);
+                }
+            }
+
+            function typeCmd2() {
+                let i = 0;
+                function type() {
+                    if (i < text2.length) {
+                        cmd2.textContent += text2[i];
+                        i++;
+                        setTimeout(type, typingSpeed + Math.random() * 60);
+                    } else {
+                        cursor2.classList.remove('steady');
+                        cursor2.classList.add('done');
+                        setTimeout(() => {
+                            output2.style.display = 'block';
+                        }, pauseAfterCmd2);
+                    }
+                }
+                type();
+            }
+
+            setTimeout(typeCmd1, 500);
+        })();
+    </script>
 </body>
 </html>
