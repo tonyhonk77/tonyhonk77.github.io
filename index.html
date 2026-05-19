@@ -5,44 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>~/project.status</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: #0a0a0a;
             color: #00ff41;
-            font-family: 'Courier New', monospace;
-            height: 100vh;
+            font-family: 'Courier New', Courier, monospace;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0;
+            padding: 1rem;
         }
+
         .terminal {
             background: #0c0c0c;
             border: 1px solid #1f1f1f;
             border-radius: 8px;
-            padding: 2rem;
-            min-width: 400px;
-            max-width: 90%;
+            padding: clamp(1rem, 4vw, 2rem);
+            width: 100%;
+            max-width: 500px;
+            min-width: unset;
+            font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+            line-height: 1.6;
+            overflow-x: auto;
         }
-        .prompt { color: #00ff41; }
+
+        .line {
+            white-space: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         .host { color: #ff5e5e; }
         .path { color: #5ea3ff; }
+
+        .terminal p {
+            margin: 0.25rem 0;
+            word-break: break-word;
+        }
+
+        .terminal p:first-child {
+            margin-bottom: 1rem;
+        }
+
         .cursor::after {
             content: '_';
             animation: blink 1s step-end infinite;
         }
+
         @keyframes blink { 50% { opacity: 0; } }
-        a { color: #ffd700; text-decoration: none; }
-        a:hover { text-decoration: underline; }
+
+        a {
+            color: #ffd700;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #ffed4a;
+        }
+
+        a:active {
+            color: #fbbf24;
+        }
+
+        /* Скроллбар для длинных строк */
+        .terminal::-webkit-scrollbar,
+        .line::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .terminal::-webkit-scrollbar-track,
+        .line::-webkit-scrollbar-track {
+            background: #0c0c0c;
+        }
+
+        .terminal::-webkit-scrollbar-thumb,
+        .line::-webkit-scrollbar-thumb {
+            background: #1f1f1f;
+            border-radius: 2px;
+        }
+
+        /* Увеличенная зона касания для ссылки на мобильных */
+        @media (max-width: 480px) {
+            a {
+                display: inline-block;
+                padding: 0.5rem 0;
+                min-height: 44px;
+                line-height: 2;
+            }
+
+            .terminal p:last-child {
+                margin-top: 0.5rem;
+            }
+        }
+
+        /* Предотвращение масштабирования при фокусе на iOS */
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            input, textarea, select {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="terminal">
-        <p><span class="host">admin@anykey</span>:<span class="path">~/project</span>$ cat status.txt</p>
-        <p style="margin-top: 1rem;">BUILD STATUS: <span style="color: #ffd700;">IN PROGRESS...</span></p>
-        <p>ESTIMATED LAUNCH: <span style="color: #5ea3ff;">NULL</span></p>
-        <p>DEPLOY TARGET: <span style="color: #5ea3ff;">anykey/main</span></p>
+        <p class="line">
+            <span class="host">admin@anykey</span>:<span class="path">~/project</span>$ cat status.txt
+        </p>
+
+        <p style="margin-top: 1rem;">
+            BUILD STATUS: <span style="color: #ffd700;">IN PROGRESS...</span>
+        </p>
+
+        <p>
+            ESTIMATED LAUNCH: <span style="color: #5ea3ff;">NULL</span>
+        </p>
+
+        <p>
+            DEPLOY TARGET: <span style="color: #5ea3ff;">anykey/main</span>
+        </p>
+
         <br>
-        <p><span class="host">admin@anykey</span>:<span class="path">~/project</span>$ ls</p>
+
+        <p class="line">
+            <span class="host">admin@anykey</span>:<span class="path">~/project</span>$ ls
+        </p>
+
         <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #666;">
             * <a href="https://anykey.cc/hls-tester/">hls-tester</a>
         </p>
