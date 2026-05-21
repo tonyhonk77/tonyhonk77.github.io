@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>~/anykey.cc</title>
+    <title>~/project.status</title>
     <style>
         * {
             margin: 0;
@@ -90,35 +90,6 @@
             word-break: break-word;
         }
 
-        .output {
-            opacity: 0;
-            animation: fadeIn 0.3s forwards;
-        }
-
-        .cursor::after {
-            content: '█';
-            animation: blink 1s step-end infinite;
-            color: #33ff33;
-        }
-
-        .cursor.steady::after {
-            content: '█';
-            animation: none;
-        }
-
-        .cursor.done::after {
-            content: '';
-            animation: none;
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
         a {
             color: #5ea3ff;
             text-decoration: none;
@@ -201,143 +172,77 @@
         <div class="terminal">
             <!-- Строка 1: cat status.txt -->
             <p>
-                <span class="host">admin@anykey</span>:<span class="path">~/project</span>$&nbsp;
-                <span id="cmd1"></span><span class="cursor steady" id="cursor1"></span>
+                <span class="host">admin@anykey</span>:<span class="path">~/project</span>$ cat status.txt
             </p>
 
             <!-- Вывод status.txt -->
-            <div id="output1" style="display: none;">
-                <p class="output" style="margin-top: 0.8rem; animation-delay: 0.1s;">
-                    BUILD STATUS: <span style="color: #ffd700;">IN PROGRESS...</span>
-                </p>
-                <p class="output" style="animation-delay: 0.3s;">
-                    ESTIMATED LAUNCH: <span style="color: #5ea3ff;">NULL</span>
-                </p>
-                <p class="output" style="animation-delay: 0.5s;">
-                    DEPLOY TARGET: <span style="color: #5ea3ff;">anykey/main</span>
-                </p>
-            </div>
+            <p style="margin-top: 0.8rem;">
+                BUILD STATUS: <span style="color: #ffd700;">IN PROGRESS...</span>
+            </p>
+            <p>
+                ESTIMATED LAUNCH: <span style="color: #5ea3ff;">NULL</span>
+            </p>
+            <p>
+                DEPLOY TARGET: <span style="color: #5ea3ff;">anykey/main</span>
+            </p>
 
             <!-- Строка 2: cat projects.txt -->
-            <p id="cmd2-line" style="display: none; margin-top: 1.2rem;">
-                <span class="host">admin@anykey</span>:<span class="path">~/project</span>$&nbsp;
-                <span id="cmd2"></span><span class="cursor steady" id="cursor2"></span>
+            <p style="margin-top: 1.2rem;">
+                <span class="host">admin@anykey</span>:<span class="path">~/project</span>$ cat projects.txt
             </p>
 
             <!-- Вывод projects.txt -->
-            <div id="output2" style="display: none;">
-                <p class="output" style="margin-top: 0.8rem; animation-delay: 0.1s;">
-                    <span class="comment"># ===== PROJECTS =====</span>
-                </p>
-                <p class="output" style="animation-delay: 0.2s;">
-                    <span class="separator">──────────────────────────────────────</span>
-                </p>
+            <p style="margin-top: 0.8rem;">
+                <span class="comment"># ===== PROJECTS =====</span>
+            </p>
+            <p>
+                <span class="separator">──────────────────────────────────────</span>
+            </p>
 
-                <!-- Проект 1: hls-tester -->
-                <p class="output" style="margin-top: 0.6rem; animation-delay: 0.4s;">
-                    <span class="project-name">hls-tester</span>
-                </p>
-                <p class="output" style="animation-delay: 0.5s; padding-left: 1.5rem;">
-                    <span class="project-desc">HLS stream validator & playlist inspector</span>
-                </p>
-                <p class="output" style="animation-delay: 0.6s; padding-left: 1.5rem;">
-                    <span class="project-link">↳ <a href="https://anykey.cc/hls-tester/">anykey.cc/hls-tester</a></span>
-                </p>
+            <!-- Проект 1: hls-tester -->
+            <p style="margin-top: 0.6rem;">
+                <span class="project-name">hls-tester</span>
+            </p>
+            <p style="padding-left: 1.5rem;">
+                <span class="project-desc">HLS stream validator & playlist inspector</span>
+            </p>
+            <p style="padding-left: 1.5rem;">
+                <span class="project-link">↳ <a href="https://anykey.cc/hls-tester/">anykey.cc/hls-tester</a></span>
+            </p>
 
-                <!-- Проект 2: dotfiles (закомментирован) -->
-                <!--
-                <p class="output" style="margin-top: 0.6rem; animation-delay: 0.8s;">
-                    <span class="project-name">dotfiles</span>
-                </p>
-                <p class="output" style="animation-delay: 0.9s; padding-left: 1.5rem;">
-                    <span class="project-desc">Personal dev environment configs & scripts</span>
-                </p>
-                <p class="output" style="animation-delay: 1.0s; padding-left: 1.5rem;">
-                    <span class="project-link">↳ <a href="https://github.com/anykey/dotfiles">github.com/anykey/dotfiles</a></span>
-                </p>
-                -->
+            <!-- Проект 2: dotfiles (закомментирован) -->
+            <!--
+            <p style="margin-top: 0.6rem;">
+                <span class="project-name">dotfiles</span>
+            </p>
+            <p style="padding-left: 1.5rem;">
+                <span class="project-desc">Personal dev environment configs & scripts</span>
+            </p>
+            <p style="padding-left: 1.5rem;">
+                <span class="project-link">↳ <a href="https://github.com/anykey/dotfiles">github.com/anykey/dotfiles</a></span>
+            </p>
+            -->
 
-                <!-- Проект 3: feed-reader (закомментирован) -->
-                <!--
-                <p class="output" style="margin-top: 0.6rem; animation-delay: 1.2s;">
-                    <span class="project-name">feed-reader</span>
-                </p>
-                <p class="output" style="animation-delay: 1.3s; padding-left: 1.5rem;">
-                    <span class="project-desc">Minimal RSS/Atom aggregator with CLI interface</span>
-                </p>
-                <p class="output" style="animation-delay: 1.4s; padding-left: 1.5rem;">
-                    <span class="project-link">↳ <a href="https://github.com/anykey/feed-reader">github.com/anykey/feed-reader</a></span>
-                </p>
-                -->
+            <!-- Проект 3: feed-reader (закомментирован) -->
+            <!--
+            <p style="margin-top: 0.6rem;">
+                <span class="project-name">feed-reader</span>
+            </p>
+            <p style="padding-left: 1.5rem;">
+                <span class="project-desc">Minimal RSS/Atom aggregator with CLI interface</span>
+            </p>
+            <p style="padding-left: 1.5rem;">
+                <span class="project-link">↳ <a href="https://github.com/anykey/feed-reader">github.com/anykey/feed-reader</a></span>
+            </p>
+            -->
 
-                <p class="output" style="animation-delay: 0.8s; margin-top: 0.5rem;">
-                    <span class="separator">──────────────────────────────────────</span>
-                </p>
-                <p class="output" style="animation-delay: 0.9s;">
-                    <span class="comment"># 1 project(s) listed</span>
-                </p>
-            </div>
+            <p style="margin-top: 0.5rem;">
+                <span class="separator">──────────────────────────────────────</span>
+            </p>
+            <p>
+                <span class="comment"># 1 project(s) listed</span>
+            </p>
         </div>
     </div>
-
-    <script>
-        (function() {
-            const cmd1 = document.getElementById('cmd1');
-            const cursor1 = document.getElementById('cursor1');
-            const output1 = document.getElementById('output1');
-            const cmd2Line = document.getElementById('cmd2-line');
-            const cmd2 = document.getElementById('cmd2');
-            const cursor2 = document.getElementById('cursor2');
-            const output2 = document.getElementById('output2');
-
-            const text1 = 'cat status.txt';
-            const text2 = 'cat projects.txt';
-
-            let charIndex = 0;
-            const typingSpeed = 100;
-            const pauseAfterCmd1 = 700;
-            const pauseAfterOutput1 = 800;
-            const pauseAfterCmd2 = 600;
-
-            function typeCmd1() {
-                if (charIndex < text1.length) {
-                    cmd1.textContent += text1[charIndex];
-                    charIndex++;
-                    setTimeout(typeCmd1, typingSpeed + Math.random() * 60);
-                } else {
-                    cursor1.classList.remove('steady');
-                    cursor1.classList.add('done');
-
-                    setTimeout(() => {
-                        output1.style.display = 'block';
-                        setTimeout(() => {
-                            cmd2Line.style.display = 'block';
-                            typeCmd2();
-                        }, pauseAfterOutput1);
-                    }, pauseAfterCmd1);
-                }
-            }
-
-            function typeCmd2() {
-                let i = 0;
-                function type() {
-                    if (i < text2.length) {
-                        cmd2.textContent += text2[i];
-                        i++;
-                        setTimeout(type, typingSpeed + Math.random() * 60);
-                    } else {
-                        cursor2.classList.remove('steady');
-                        cursor2.classList.add('done');
-                        setTimeout(() => {
-                            output2.style.display = 'block';
-                        }, pauseAfterCmd2);
-                    }
-                }
-                type();
-            }
-
-            setTimeout(typeCmd1, 500);
-        })();
-    </script>
 </body>
 </html>
